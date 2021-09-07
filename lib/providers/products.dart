@@ -2,40 +2,12 @@ import 'dart:convert';
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
+import 'package:shop_app/utilities/api_query.dart';
 import 'package:shop_app/utilities/http_exceptions.dart';
-import 'package:shop_app/utilities/constants.dart';
 import './product.dart';
 
 class Products with ChangeNotifier {
-  List<Product> _item = [
-    /* Product(
-        title: 'RedShirt',
-        id: 'p1',
-        description: 'A red Shirt-it is pretty',
-        price: 58.99,
-        imageUrl:
-            'assets/New-Men-font-b-Shoes-b-font-summer-fashion-Men-Casual-font-b-Shoes-b-font.jpg'),
-    Product(
-        title: 'Black Watch',
-        id: 'p2',
-        description: 'A pretty Black Watch',
-        price: 29.00,
-        imageUrl:
-            'assets/2019-Fashion-New-Trainers-Shoe-Brand-Men-Sport-Running-Shoes-Designer-Sport-Sneaker-Shoes.jpg'),
-    Product(
-        title: 'Hat',
-        id: 'p3',
-        description: 'A pretty Black Watch',
-        price: 17.99,
-        imageUrl: 'assets/5df9a5bdd8217a0612705eff-large.jpg'),
-    Product(
-        title: 'gloves',
-        id: 'p4',
-        description: 'A pretty Black gloves',
-        price: 179.99,
-        imageUrl: 'assets/41Leu3gBUFL._UX395_.jpg'),*/
-  ];
-
+  List<Product> _item = [];
   final String token;
   final String userId;
 
@@ -70,7 +42,7 @@ class Products with ChangeNotifier {
         return;
       }
       final url =
-      Uri.parse('$baseAppUrl/userFavorite/$userId.json?auth=$token');
+          Uri.parse('$baseAppUrl/userFavorite/$userId.json?auth=$token');
       final favoriteResponse = await http.get(url);
       final favoriteData = jsonDecode(favoriteResponse.body);
       final List<Product> loadedProducts = [];
@@ -81,7 +53,7 @@ class Products with ChangeNotifier {
             description: productData["description"],
             imageUrl: productData["imageUrl"],
             isFavorite:
-            favoriteData == null ? false : favoriteData[productId] ?? false,
+                favoriteData == null ? false : favoriteData[productId] ?? false,
             price: productData["price"]));
       });
       _item = loadedProducts;
@@ -145,7 +117,7 @@ class Products with ChangeNotifier {
   Future<void> deleteProduct(String productId) async {
     final url = Uri.parse('$baseAppUrl/products/$productId.json?auth=$token');
     final existingProductIndex =
-    _item.indexWhere((product) => product.productId == productId);
+        _item.indexWhere((product) => product.productId == productId);
     var existingProduct = _item[existingProductIndex];
     _item.removeAt(existingProductIndex);
     notifyListeners();

@@ -1,19 +1,23 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:shop_app/utilities/custom_route.dart';
 
 const TextStyle headLineTheme = TextStyle(
     color: Color(0xffffffff), fontSize: 20, fontFamily: 'RobotoCondensed');
-const TextStyle textStyleTheme =
-    TextStyle(color: Colors.purpleAccent, fontSize: 20, fontWeight: FontWeight.bold);
+const TextStyle textStyleTheme = TextStyle(
+    color: Color(0xff6200ee), fontSize: 20, fontWeight: FontWeight.bold);
 
-const baseAppUrl = 'https://shop-app-374e3-default-rtdb.firebaseio.com';
-const apiKey = 'AIzaSyAh2Bg5dh4dKEddHWG5PwO-JebPrvvy5sM';
-const baseAuthUrl = 'https://identitytoolkit.googleapis.com';
-
-ThemeData kThemeData = ThemeData(
+ThemeData themeLightMode = ThemeData(
     fontFamily: 'Raleway',
-    primaryColor: Colors.purpleAccent,
-    accentColor: Colors.pinkAccent,
+    primaryColor: Color(0xff6200ee),
+    accentColor:Color(0xfff4511e),
+    appBarTheme: AppBarTheme(
+        color: Color(0xff6200ee),
+        backwardsCompatibility: false,
+        systemOverlayStyle: SystemUiOverlayStyle(
+          statusBarColor: Colors.transparent,
+          statusBarIconBrightness: Brightness.light,
+        )),
     pageTransitionsTheme: PageTransitionsTheme(
         builders: ({
       TargetPlatform.android: CustomRouteTransitionBuilder(),

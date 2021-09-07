@@ -4,8 +4,8 @@ import 'dart:convert';
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:shop_app/utilities/api_query.dart';
 import 'package:shop_app/utilities/http_exceptions.dart';
-import 'package:shop_app/utilities/constants.dart';
 
 class AuthProvider with ChangeNotifier {
   String _userId;
@@ -40,7 +40,7 @@ class AuthProvider with ChangeNotifier {
     if (_authTimer != null) {
       _authTimer.cancel();
     }
-    final _autoLogout = _expireData.difference(DateTime.now()).inMilliseconds;
+    final _autoLogout = _expireData.difference(DateTime.now()).inMicroseconds;
     _authTimer = Timer(Duration(seconds: _autoLogout), logOut);
   }
 

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shop_app/providers/auth_provider.dart';
+import 'package:shop_app/screen/auth_screen.dart';
 import 'package:shop_app/screen/order_screen.dart';
 import 'package:shop_app/screen/product_screen.dart';
 import 'package:shop_app/screen/manage_product_screen.dart';
@@ -19,27 +20,24 @@ class AppDrawer extends StatelessWidget {
           ListTile(
             leading: const Icon(Icons.shop),
             title: const Text('Shop'),
-            onTap: () {
-              Navigator.of(context)
-                  .pushReplacementNamed(ProductScreen.routeName);
-            },
+            onTap: () => Navigator.of(context)
+                .pushReplacementNamed(ProductScreen.routeName),
           ),
           const Divider(),
           ListTile(
             leading: const Icon(Icons.payment),
             title: const Text('Orders'),
-            onTap: () {
-              Navigator.of(context).pushReplacementNamed(OrderScreen.routeName);
-            },
+            onTap: () => Navigator.of(context)
+                .pushReplacementNamed(OrderScreen.routeName),
           ),
           const Divider(),
           ListTile(
             leading: const Icon(Icons.edit),
             title: const Text('Manage Product'),
-            onTap: () {
+            onTap: () =>
               Navigator.of(context)
-                  .pushReplacementNamed(ManageProductScreen.routeName);
-            },
+                  .pushReplacementNamed(ManageProductScreen.routeName)
+            ,
           ),
           const Divider(),
           ListTile(
@@ -47,9 +45,9 @@ class AppDrawer extends StatelessWidget {
             title: const Text('Logout'),
             onTap: () {
               Navigator.pop(context);
-           //  Navigator.pushReplacementNamed(context,ProductScreen.routeName);
+              //  Navigator.pushReplacementNamed(context,ProductScreen.routeName);
               Provider.of<AuthProvider>(context, listen: false).logOut();
-              //Navigator.of(context).pushReplacementNamed(ManageProductScreen.routeName);
+              Navigator.of(context).pushReplacementNamed(AuthScreen.routeName);
             },
           ),
         ],

@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:provider/provider.dart';
 import 'package:shop_app/utilities/http_exceptions.dart';
 import 'package:shop_app/providers/auth_provider.dart';
@@ -20,6 +21,8 @@ class AuthCard extends StatefulWidget {
 
 class _AuthCardState extends State<AuthCard>
     with SingleTickerProviderStateMixin {
+  HttpExceptions httpExceptions;
+
   final GlobalKey<FormState> _formKey = GlobalKey();
   AuthMode _authMode = AuthMode.Login;
   final Map<String, String> _authData = {'email': '', 'password': ''};
@@ -29,6 +32,7 @@ class _AuthCardState extends State<AuthCard>
   AnimationController _animationController;
   Animation<double> _opacityAnimation;
   Animation _slideAnimation;
+  bool _isPassword = true;
 
   @override
   void initState() {
@@ -71,15 +75,13 @@ class _AuthCardState extends State<AuthCard>
         await Provider.of<AuthProvider>(context, listen: false)
             .signUp(_authData['email'], _authData['password']);
       }
-    } on SocketException{
+    } on SocketException {
       rethrow;
-    }
-    on HttpExceptions catch (error) {
+    } on HttpExceptions catch (error) {
       _authDialog(context, error.authHandlerExceptions(error));
-    }
-    catch (error) {
-      const errorMessage = 'Network Error please try later';
-      _authDialog(context, errorMessage);
+    } catch (error) {
+      final errorMessage = 'Network Error please try later';
+      _authDialog(context, error.toString() ?? errorMessage);
     }
     _loading(false);
   }
@@ -108,16 +110,16 @@ class _AuthCardState extends State<AuthCard>
         ),
         elevation: 8.0,
         child: AnimatedContainer(
-          duration: Duration(milliseconds: 500),
+          duration: Duration(milliseconds: 300),
           curve: Curves.linear,
           height: _authMode == AuthMode.SignUp
               ? deviceSize.height * 0.46
-              : deviceSize.height * 0.36,
+              : deviceSize.height * 0.40,
           //height: _heightAnimation.value.height,
           constraints: BoxConstraints(
               minHeight: _authMode == AuthMode.SignUp
-                  ? deviceSize.height * 0.44
-                  : deviceSize.height * 0.35),
+                  ? deviceSize.height * 0.50
+                  : deviceSize.height * 0.40),
           width: deviceSize.width * 0.75,
           padding: const EdgeInsets.all(16.0),
           child: Form(
@@ -126,7 +128,9 @@ class _AuthCardState extends State<AuthCard>
               child: Column(
                 children: <Widget>[
                   TextFormField(
-                    decoration: const InputDecoration(labelText: 'E-Mail'),
+                    decoration: const InputDecoration(
+                        labelText: 'E-Mail',
+                        suffixIcon: Icon(Icons.mail_outline_sharp)),
                     keyboardType: TextInputType.emailAddress,
                     validator: (value) {
                       if (value.isEmpty || !value.contains('@')) {
@@ -139,8 +143,20 @@ class _AuthCardState extends State<AuthCard>
                     },
                   ),
                   TextFormField(
-                    decoration: const InputDecoration(labelText: 'Password'),
-                    obscureText: true,
+                    decoration: InputDecoration(
+                      labelText: 'Password',
+                      suffixIcon: IconButton(
+                        onPressed: () {
+                          setState(() {
+                            _isPassword = !_isPassword;
+                          });
+                        },
+                        icon: _isPassword
+                            ? Icon(Icons.visibility_outlined)
+                            : Icon(Icons.visibility_off_outlined),
+                      ),
+                    ),
+                    obscureText: _isPassword,
                     controller: _passwordController,
                     validator: (value) {
                       if (value.isEmpty || value.length < 6) {
@@ -153,9 +169,9 @@ class _AuthCardState extends State<AuthCard>
                     },
                   ),
                   AnimatedContainer(
-                      duration: Duration(milliseconds: 500),
+                      duration: Duration(milliseconds: 300),
                       constraints: BoxConstraints(
-                          minHeight: _authMode == AuthMode.SignUp ? 60 : 0,
+                          minHeight: _authMode == AuthMode.SignUp ? 55 : 0,
                           maxHeight: _authMode == AuthMode.SignUp
                               ? deviceSize.height * 15
                               : 0),
@@ -209,7 +225,7 @@ class _AuthCardState extends State<AuthCard>
   }
 }
 
-  void _authDialog(BuildContext context, String message) {
+void _authDialog(BuildContext context, String message) {
   CustomShowDialog.alertDialog(
     message: message,
     title: 'An Error occurred',

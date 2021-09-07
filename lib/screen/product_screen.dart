@@ -1,3 +1,4 @@
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shop_app/providers/card_provider.dart';
@@ -26,13 +27,16 @@ class _ProductScreenState extends State<ProductScreen> {
       appBar: AppBar(
         centerTitle: true,
         title: const Text('Product'),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.vertical(bottom: Radius.circular(16)),
+        ),
         actions: [
           _popUpMenuButton(),
           Consumer<CardProvider>(
             builder: (context, card, ch) => Badge(
               color: card.itemCount == 0
                   ? Colors.transparent
-                  : Theme.of(context).errorColor,
+                  : Theme.of(context).colorScheme.secondary,
               child: ch,
               value: card.itemCount != null ? card.itemCount.toString() : '',
             ),
@@ -68,10 +72,9 @@ class _ProductScreenState extends State<ProductScreen> {
   PopupMenuButton<Filter> _popUpMenuButton() {
     return PopupMenuButton(
       icon: const Icon(Icons.more_vert),
-      onSelected: (Filter filter) =>
-        setState(() {
-          filter == Filter.Selected ? _showOnly = true : _showOnly = false;
-        }),
+      onSelected: (Filter filter) => setState(() {
+        filter == Filter.Selected ? _showOnly = true : _showOnly = false;
+      }),
       itemBuilder: (_) => [
         const PopupMenuItem(
             child: Text('Show Favorites'), value: Filter.Selected),

@@ -8,6 +8,7 @@ class AuthScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final deviceSize = MediaQuery.of(context).size;
+    final theme =Theme.of(context);
     // final transformConfig = Matrix4.rotationZ(-8 * pi / 180);
     // transformConfig.translate(-10.0);
     return Scaffold(
@@ -44,7 +45,7 @@ class AuthScreen extends StatelessWidget {
                         ..translate(-10.0),
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(20),
-                        color: Colors.deepOrange.shade900,
+                        color: theme.colorScheme.secondary,
                         boxShadow: [
                           const BoxShadow(
                             blurRadius: 8,
@@ -57,7 +58,7 @@ class AuthScreen extends StatelessWidget {
                         'MyShop',
                         style: TextStyle(
                           color:
-                              Theme.of(context).accentTextTheme.headline6.color,
+                              theme.accentTextTheme.headline6.color,
                           fontSize: 50,
                           fontFamily: 'Anton',
                           fontWeight: FontWeight.normal,

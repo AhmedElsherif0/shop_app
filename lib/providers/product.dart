@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
-import 'package:shop_app/utilities/constants.dart';
+import 'package:shop_app/utilities/api_query.dart';
 
 class Product with ChangeNotifier {
   final String productId;

@@ -3,7 +3,7 @@ import 'package:http/http.dart' as http;
 import 'package:flutter/foundation.dart';
 import 'package:shop_app/models/card_model.dart';
 import 'package:shop_app/models/order_model.dart';
-import 'package:shop_app/utilities/constants.dart';
+import 'package:shop_app/utilities/api_query.dart';
 
 class OrderProvider with ChangeNotifier {
   final String token;
